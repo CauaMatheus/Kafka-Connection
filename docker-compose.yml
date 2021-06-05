@@ -1,0 +1,91 @@
+version: "2"
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - app-tier
+
+  kafka:
+    image: bitnami/kafka:latest
+    ports:
+      - 9092:9092
+      - 9093:9093
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9092,EXTERNAL://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka:9092,EXTERNAL://localhost:9093
+      - KAFKA_INTER_BROKER_LISTENER_NAME=CLIENT
+    depends_on:
+      - zookeeper
+    networks:
+      - app-tier
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports: 
+      - 27017:27017
+    networks:
+      - app-tier
+
+  postgresdb:
+    env_file:
+      - ./packages/order-management/.env
+    image: postgres
+    container_name: postgresdb
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=${PG_DB}
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - app-tier
+
+  pipedrive:
+    build:
+      context: ./packages/pipedrive
+      dockerfile: Dockerfile
+    container_name: pipedrive
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - kafka
+      - mongodb
+    networks:
+      - app-tier
+
+  order-management:
+    build:
+      context: ./packages/order-management
+      dockerfile: Dockerfile
+    container_name: order-management
+    restart: always
+    ports:
+      - 3001:3001
+    depends_on:
+      - kafka
+      - postgresdb
+    networks:
+      - app-tier
+
+volumes:
+  pgdata:
+    driver: local

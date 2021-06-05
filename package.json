@@ -1,0 +1,27 @@
+{
+  "name": "ewz-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "author": "CauaMatheus <caua10000@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "NODE_ENV=test jest -i",
+    "migration:run": "docker exec order-management npx ts-node-dev -r dotenv/config node_modules/.bin/typeorm migration:run"
+  },
+  "devDependencies": {
+    "@monorepo/eslint-config": "*",
+    "@types/jest": "^26.0.23",
+    "jest": "^27.0.4",
+    "ts-jest": "^27.0.2",
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  }
+}
