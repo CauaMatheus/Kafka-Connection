@@ -11,7 +11,7 @@
 - [🤖 Testes automatizados](#-testes-automatizados)
 - [🤔 Como usar ?](#-como-usar-)
 ## 🗒️ Descrição
-Essa repositório contém 2 microsserviços que se comunicam por um sistema de fila Kafka. <br/>
+Esse repositório contém 2 microsserviços que se comunicam por um sistema de fila Kafka. <br/>
 Um deles busca as **"deals"** na api do **pipedrive**, salva o histórico em um banco MongoDB e envia para o outro microsserviço as informações da **"deal"**. <br/>
 **Esse microsserviço escuta a porta 3000** <br/>
 
@@ -32,9 +32,9 @@ Essa rota recebe uma data pelos parâmetros da rota e retorna todos os pedidos q
 Durante o desenvolvimento, em alguns momentos o docker-compose não registrava as variáveis da .env dentro do pacote `order-management`. Para evitar isso, duplique a `.env.example` do `root directory`, renomeie para `.env` e escreva novamente os valores de forma que fique idêntica a `.env` do pacote `order-management`.
 
 ## 🔠 Variáveis de ambiente
-**PG_USER**: username para criar e conectar ao banco postgres. <br/>
-**PG_PASS**: senha para criar e conectar ao banco postgres. <br/>
-**PG_DB**: nome do banco para criar e conectar ao banco postgres. <br/>
+**PG_USER**: Username para criar e conectar ao banco postgres. <br/>
+**PG_PASS**: Senha para criar e conectar ao banco postgres. <br/>
+**PG_DB**: Nome do banco para criar e conectar ao banco postgres. <br/>
 **API_TOKEN**: Token da api do `pipedrive` para fazer as requisições.
 
 ## 🤖 Testes automatizados
@@ -56,9 +56,9 @@ cd Desafio-Back-end-Junior
 yarn
 ```
 
-2) Dentro de cada pacote tem uma `.env.example`. Duplique ela e renomeie para `.env`, após isso complete os valores desejáveis. <br/>
+2) Dentro de cada pacote tem uma `.env.example`. Duplique ela e renomeie para `.env`, após isso complete com os valores desejáveis. <br/>
 
-3) Rode os containers no `root directory` com o comando
+3) Rode os containers no `root directory` com o comando:
 ```
 docker-compose up -d
 ```
@@ -67,7 +67,7 @@ docker-compose up -d
 yarn migration:run
 ```
 
-5) Agora você poderá ver os logs de cada container com os comando
+5) Agora você poderá ver os logs de cada container com os comandos:
 ```
 docker logs pipedrive -f
 ```
