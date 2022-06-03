@@ -1,4 +1,4 @@
-<h1 align=center>Desafio Back-end Júnior</h1>
+<h1 align=center>Kafka-Connection</h1>
 
 ## Sumário
 - [🗒️ Descrição](#️-descrição)
